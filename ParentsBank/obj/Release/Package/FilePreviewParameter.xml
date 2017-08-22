@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="ParentsBankgroupn" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Mrinmay\ p\\documents\\visual\ studio\ 2015\\Projects\\ParentsBank\\ParentsBank\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\Mrinmay\ p\\documents\\visual\ studio\ 2015\\Projects\\ParentsBank\\ParentsBank\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="" value="Server=sql1.gtt.me;Database=db_c05201172bc94f5bb5f1a3c2721f0622;User Id=U_c05201172bc94f5bb5f1a3c2721f0622;Password=pwd_c05201172bc94f5bb5f1a3c2721f0622" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Mrinmay\ p\\documents\\visual\ studio\ 2015\\Projects\\ParentsBank\\ParentsBank\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

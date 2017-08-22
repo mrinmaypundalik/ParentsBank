@@ -1,0 +1,226 @@
+﻿@using ParentsBank.Models;
+@model ParentsBank.Models.Account
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+@using (Html.BeginForm("Buy", "Accounts", FormMethod.Post))
+
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <h4>Account Details</h4>
+        
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>
+                        Owner
+                    </th>
+                    <th>
+                        Recepient
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Open Date
+                    </th>
+                    <th>
+                        Interest Rate
+                    </th>
+                    <th>
+                        Principal Amount
+                    </th>
+                    <th>
+                        Interest Earned
+                    </th>
+                    <th>
+                        Total Balance
+                    </th>
+                    <th>
+                        Description
+                    </th>
+
+                </tr>
+                @foreach (Account account in ViewBag.Accounts)
+                {
+                    <tr>
+                        <td>
+                            @account.Owner
+                        </td>
+
+                        <td>
+                            @account.Recipient
+                        </td>
+                        <td>
+                            @account.Name
+                        </td>
+                        <td>
+                            @account.OpenDate
+                        </td>
+                        <td>
+                            @account.Interest
+                        </td>
+                        <td>
+                           @if (account.InterestEarned.HasValue)
+                           {
+                             @((float)(account.Balance - account.InterestEarned))
+                           }
+                           else
+                           {
+                               <span>0</span>
+                           }
+                        </td>
+                        <td>
+                            @((float)account.YearToDateInterest())
+                        </td>
+                        <td>
+                            @account.Balance
+                        </td>
+                        <td>
+                            @account.Description
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+<hr/>
+
+<div>
+    <h4>Transaction</h4>
+
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>
+                    Transaction Date
+                </th>
+                <th>
+                    Transaction Type
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Note
+                </th>
+                <th>
+                    Details
+                </th>
+</tr>
+@foreach (Transaction transaction in ViewBag.Transactions) { 
+            <tr>
+                <td>
+                    @transaction.TransactionDate
+                </td>
+
+                <td>
+                    @if (transaction.Amount < 0)
+                    {
+                        <span>Debit</span>
+                    }
+                    else
+                    {
+                        <span>Credit</span>
+                    }
+                </td>
+
+                <td>
+                    @transaction.Amount
+                </td>
+                <td>
+                    @transaction.Note
+                </td>
+                <td>
+                    <a href="~/Transactions/Details/@transaction.ID" class="btn btn-primary btn-xs">Details</a>
+                </td>
+            </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+<div>
+        <h4>WishList</h4>
+        <hr />
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>
+                        Date Added
+                    </th>
+                    <th>
+                        Cost
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Link
+                    </th>
+                    <th>
+                        Purchased
+                    </th>
+                    <th>
+                        Buy
+                    </th>
+                </tr>
+                @foreach (WishList wishlist in ViewBag.WishLists)
+                {
+
+
+                    <tr>
+                        <td>
+                            @wishlist.DateAdded
+                        </td>
+
+                        <td>
+                            @wishlist.Cost
+                        </td>
+
+                        <td>
+                            @wishlist.Description
+                        </td>
+
+                        <td>
+                            @wishlist.Link
+                        </td>
+
+                        <td>
+                            @if (@wishlist.Purchased == true)
+                            {<span>Yes</span>}
+                            @if (@wishlist.Purchased == false)
+                            {<span>No</span>}
+                        </td>
+                        <td>
+                            @if (@wishlist.Purchased == false && @wishlist.Cost < @wishlist.Account.Balance)
+                            {
+                                //@Html.Editor("id", @wishlist.id, new { htmlAttributes = new { @class = "hidden" } })
+                                <div class="form-actions no-color">
+                                    <input type="submit" value="Buy" class="btn btn-primary" />
+                                    <input type="hidden" value=@wishlist.id name="id" />
+                                </div>
+                            }
+                            @if (wishlist.Purchased == false && wishlist.Cost > wishlist.Account.Balance)
+                            {
+                                <span>$@(wishlist.Cost-wishlist.Account.Balance) more required to buy @(wishlist.Description)</span>
+                            }
+                            @if (@wishlist.Purchased)
+                            {
+                                <span>Bought</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    }
+    <p>
+        @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-primary" })
+    </p>
